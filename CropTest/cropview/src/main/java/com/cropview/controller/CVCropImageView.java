@@ -122,6 +122,12 @@ public class CVCropImageView extends ImageView {
 
     // Lifecycle methods ///////////////////////////////////////////////////////////////////////////
 
+    float top;
+    float right;
+    float bottom;
+    float left;
+    boolean isTrue = false;
+
     @Override
     public Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
@@ -146,6 +152,12 @@ public class CVCropImageView extends ImageView {
         ss.handleColor = this.mHandleColor;
         ss.guideColor = this.mGuideColor;
         ss.initialFrameScale = this.mInitialFrameScale;
+
+        top = mFrameRect.top;
+        right = mFrameRect.right;
+        bottom = mFrameRect.bottom;
+        left = mFrameRect.left;
+        isTrue = true;
 
         return ss;
     }
@@ -820,6 +832,10 @@ public class CVCropImageView extends ImageView {
         float sw = w * mInitialFrameScale;
         float sh = h * mInitialFrameScale;
         mFrameRect = new RectF(cx - sw / 2, cy - sh / 2, cx + sw / 2, cy + sh / 2);
+        if (isTrue) {
+            mFrameRect = new RectF(left, top, right, bottom);
+            isTrue = false;
+        }
         invalidate();
     }
 
